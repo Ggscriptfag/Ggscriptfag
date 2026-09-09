@@ -1,1 +1,625 @@
-local S=game:GetService("ServerScriptService");local P=game:GetService("StarterPlayer").StarterPlayerScripts;local R=game:GetService("ReplicatedStorage");for _,x in ipairs({S:FindFirstChild("Ggscriptfag_HotPotato_Server"),P:FindFirstChild("Ggscriptfag_HotPotato_Client"),R:FindFirstChild("Ggscriptfag_HotPotato_Remote")})do if x then x:Destroy()end end;local E=Instance.new("RemoteEvent",R);E.Name="Ggscriptfag_HotPotato_Remote";local V=Instance.new("Script",S);V.Name="Ggscriptfag_HotPotato_Server";V.Source='local P=game:GetService("Players");local R=game:GetService("ReplicatedStorage"):WaitForChild("Ggscriptfag_HotPotato_Remote");local O=nil;local T=30;local A=false;local function C(p)if not p then return end;for _,z in ipairs({p:FindFirstChild("Backpack"),p.Character})do if z then for _,x in ipairs(z:GetChildren())do if x.Name:find("HOT POTATO")then x:Destroy()end end end end;end;local function D(p,on)if not p or not p.Character then return end;local h=p.Character:FindFirstChild("Head");if not h then return end;local q=h:FindFirstChild("HotPotatoDanger");if q then q:Destroy()end;if on then local g=Instance.new("BillboardGui",h);g.Name="HotPotatoDanger";g.Size=UDim2.fromOffset(220,60);g.StudsOffset=Vector3.new(0,3.5,0);g.AlwaysOnTop=true;local f=Instance.new("Frame",g);f.Size=UDim2.fromScale(1,1);f.BackgroundColor3=Color3.fromRGB(35,0,0);Instance.new("UICorner",f).CornerRadius=UDim.new(0,15);local s=Instance.new("UIStroke",f);s.Color=Color3.fromRGB(255,40,40);s.Thickness=3;local l=Instance.new("TextLabel",f);l.Size=UDim2.fromScale(1,1);l.BackgroundTransparency=1;l.Text="⚠️ DANGER";l.TextColor3=Color3.fromRGB(255,70,70);l.TextScaled=true;l.Font=Enum.Font.GothamBlack end end;end;local function B(p,n)C(p);for i=1,n or 1 do local t=Instance.new("Tool");t.Name="HOT POTATO "..i;t.RequiresHandle=true;t.CanBeDropped=false;local h=Instance.new("Part",t);h.Name="Handle";h.Shape=Enum.PartType.Ball;h.Size=Vector3.new(2,2,2);h.Material=Enum.Material.Neon;h.Color=Color3.fromRGB(255,30,30);h.CanCollide=false;h.Massless=true;local l=Instance.new("PointLight",h);l.Color=Color3.fromRGB(255,0,0);l.Brightness=8;l.Range=18;local g=Instance.new("BillboardGui",h);g.Size=UDim2.fromOffset(90,40);g.StudsOffset=Vector3.new(0,2,0);g.AlwaysOnTop=true;local x=Instance.new("TextLabel",g);x.Size=UDim2.fromScale(1,1);x.BackgroundTransparency=1;x.Text="💣";x.TextScaled=true;t.Parent=p:WaitForChild("Backpack")end;O=p;D(p,true);R:FireAllClients("BOMB",p.Name,T)end;local function F(n)if typeof(n)~="string"then return end;n=n:lower():gsub("%s","");for _,p in ipairs(P:GetPlayers())do if p.Name:lower()==n or p.DisplayName:lower()==n then return p end end;for _,p in ipairs(P:GetPlayers())do if p.Name:lower():sub(1,#n)==n then return p end end end;R.OnServerEvent:Connect(function(p,a,d)if a=="GIVE_BOMB"then local q=F(d);if q then if O then C(O);D(O,false)end;B(q);R:FireClient(p,"OK","BOMB GIVEN TO "..q.Name)else R:FireClient(p,"ERR","PLAYER NOT FOUND")end elseif a=="PASS"then if O then local q=F(d);if q and q~=O then C(O);D(O,false);B(q)end end elseif a=="START"then A=true;T=30;local z=P:GetPlayers();if #z>0 then B(z[math.random(#z)])end elseif a=="ABILITY"then local h=p.Character and p.Character:FindFirstChildOfClass("Humanoid");local r=p.Character and p.Character:FindFirstChild("HumanoidRootPart");if d=="SPEED"and h then h.WalkSpeed=60;task.delay(5,function()if h then h.WalkSpeed=16 end end)elseif d=="JUMP"and h then h.JumpPower=100;task.delay(5,function()if h then h.JumpPower=50 end end)elseif d=="DASH"and r then r.AssemblyLinearVelocity=r.CFrame.LookVector*120 end end end);P.PlayerRemoving:Connect(function(p)if O==p then O=nil;D(p,false);local z=P:GetPlayers();if #z>0 then B(z[math.random(#z)])end end end);task.spawn(function()while true do task.wait(1);if A and O then T-=1;R:FireAllClients("TIMER",T);if T<=10 then R:FireAllClients("WARNING",T)end;if T<=0 then local old=O;C(old);D(old,false);O=nil;R:FireAllClients("ELIMINATED",old.Name);task.wait(2);local z=P:GetPlayers();if #z>0 then T=30;B(z[math.random(#z)])end end end end end)';local L=Instance.new("LocalScript",P);L.Name="Ggscriptfag_HotPotato_Client";L.Source='local P=game:GetService("Players");local T=game:GetService("TweenService");local R=game:GetService("ReplicatedStorage"):WaitForChild("Ggscriptfag_HotPotato_Remote");local p=P.LocalPlayer;local G=Instance.new("ScreenGui",p:WaitForChild("PlayerGui"));G.ResetOnSpawn=false;local M=Instance.new("Frame",G);M.Size=UDim2.fromOffset(390,430);M.Position=UDim2.new(1,-410,0,25);M.BackgroundColor3=Color3.fromRGB(10,11,17);M.BorderSizePixel=0;Instance.new("UICorner",M).CornerRadius=UDim.new(0,20);local st=Instance.new("UIStroke",M);st.Color=Color3.fromRGB(255,50,60);st.Thickness=2;local title=Instance.new("TextLabel",M);title.Size=UDim2.new(1,-80,0,50);title.Position=UDim2.fromOffset(20,10);title.BackgroundTransparency=1;title.Text="Ggscriptfag-Hot Potato";title.TextColor3=Color3.new(1,1,1);title.TextSize=21;title.Font=Enum.Font.GothamBlack;title.TextXAlignment=Enum.TextXAlignment.Left;local min=Instance.new("TextButton",M);min.Size=UDim2.fromOffset(40,40);min.Position=UDim2.new(1,-50,0,15);min.Text="−";min.TextSize=25;min.TextColor3=Color3.new(1,1,1);min.BackgroundColor3=Color3.fromRGB(35,36,45);Instance.new("UICorner",min).CornerRadius=UDim.new(0,12);local inp=Instance.new("TextBox",M);inp.Size=UDim2.new(1,-40,0,55);inp.Position=UDim2.fromOffset(20,75);inp.PlaceholderText="PlayerName";inp.TextColor3=Color3.new(1,1,1);inp.TextSize=17;inp.BackgroundColor3=Color3.fromRGB(25,26,34);inp.BorderSizePixel=0;Instance.new("UICorner",inp).CornerRadius=UDim.new(0,14);local give=Instance.new("TextButton",M);give.Size=UDim2.new(1,-40,0,58);give.Position=UDim2.fromOffset(20,145);give.Text="💣  GIVE BOMB";give.TextColor3=Color3.new(1,1,1);give.TextSize=18;give.Font=Enum.Font.GothamBlack;give.BackgroundColor3=Color3.fromRGB(190,35,45);give.BorderSizePixel=0;Instance.new("UICorner",give).CornerRadius=UDim.new(0,14);local start=Instance.new("TextButton",M);start.Size=UDim2.new(1,-40,0,50);start.Position=UDim2.fromOffset(20,215);start.Text="▶ START ROUND";start.TextColor3=Color3.new(1,1,1);start.TextSize=16;start.Font=Enum.Font.GothamBold;start.BackgroundColor3=Color3.fromRGB(40,120,200);start.BorderSizePixel=0;Instance.new("UICorner",start).CornerRadius=UDim.new(0,14);local pass=Instance.new("TextButton",M);pass.Size=UDim2.new(1,-40,0,50);pass.Position=UDim2.fromOffset(20,275);pass.Text="🔥 PASS BOMB";pass.TextColor3=Color3.new(1,1,1);pass.TextSize=16;pass.Font=Enum.Font.GothamBold;pass.BackgroundColor3=Color3.fromRGB(220,100,25);pass.BorderSizePixel=0;Instance.new("UICorner",pass).CornerRadius=UDim.new(0,14);local stat=Instance.new("TextLabel",M);stat.Size=UDim2.new(1,-40,0,45);stat.Position=UDim2.fromOffset(20,335);stat.BackgroundTransparency=1;stat.Text="● READY";stat.TextColor3=Color3.fromRGB(100,255,150);stat.TextSize=14;stat.Font=Enum.Font.GothamBold;stat.TextXAlignment=Enum.TextXAlignment.Left;give.Activated:Connect(function()R:FireServer("GIVE_BOMB",inp.Text)end);start.Activated:Connect(function()R:FireServer("START")end);pass.Activated:Connect(function()R:FireServer("PASS",inp.Text)end);min.Activated:Connect(function()M.Size=UDim2.fromOffset(390,65);for _,x in ipairs(M:GetChildren())do if x:IsA("GuiObject")and x~=min then x.Visible=false end end;min.Text="+";min.Activated:Once(function()M.Size=UDim2.fromOffset(390,430);for _,x in ipairs(M:GetChildren())do if x:IsA("GuiObject")then x.Visible=true end end;min.Text="−"end)end);R.OnClientEvent:Connect(function(a,b,c)if a=="OK"then stat.Text="● "..b;stat.TextColor3=Color3.fromRGB(100,255,150)elseif a=="ERR"then stat.Text="● "..b;stat.TextColor3=Color3.fromRGB(255,80,80)elseif a=="BOMB"then stat.Text="💣 "..b.." HAS THE BOMB";stat.TextColor3=Color3.fromRGB(255,80,80)elseif a=="TIMER"then stat.Text="⏱ "..b.." SECONDS"elseif a=="WARNING"then stat.Text="⚠️ "..b.." SECONDS LEFT"elseif a=="ELIMINATED"then stat.Text="💥 "..b.." ELIMINATED"end end)'
+--// GGSCRIPTFAG - HOT POTATO
+--// ONE INSTALLER SCRIPT
+--// Run this ONCE from Roblox Studio Command Bar.
+--// It automatically creates the secure ServerScript + LocalScript.
+local SSS=game:GetService("ServerScriptService")
+local SPS=game:GetService("StarterPlayer"):WaitForChild("StarterPlayerScripts")
+local RS=game:GetService("ReplicatedStorage")
+local oldServer=SSS:FindFirstChild("Ggscriptfag_HotPotato_Server")
+local oldClient=SPS:FindFirstChild("Ggscriptfag_HotPotato_Client")
+local oldRemote=RS:FindFirstChild("Ggscriptfag_HotPotato_Remote")
+if oldServer then oldServer:Destroy()end
+if oldClient then oldClient:Destroy()end
+if oldRemote then oldRemote:Destroy()end
+local remote=Instance.new("RemoteEvent")
+remote.Name="Ggscriptfag_HotPotato_Remote"
+remote.Parent=RS
+local server=Instance.new("Script")
+server.Name="Ggscriptfag_HotPotato_Server"
+server.Source=[==[
+--// GGSCRIPTFAG HOT POTATO - SERVER
+--// Secure multiplayer authority
+local Players=game:GetService("Players")
+local ReplicatedStorage=game:GetService("ReplicatedStorage")
+local TweenService=game:GetService("TweenService")
+local remote=ReplicatedStorage:WaitForChild("Ggscriptfag_HotPotato_Remote")
+local bombOwner=nil
+local dangerBillboard=nil
+local roundActive=false
+local roundNumber=0
+local timer=30
+local eliminated={}
+local config={Timer=30,PassDistance=18,DoubleBomb=false,TripleBomb=false,RandomTimer=true,Abilities=true,AutoPass=false,Chaos=false,Explosions=true,Hazards=true,Cinematic=true,ScreenShake=true,DynamicMusic=true,SafeZone=false,SpeedRound=false,LowGravity=false}
+local stats={}
+local function getStats(player)
+	stats[player.UserId]=stats[player.UserId]or{Wins=0,Losses=0,Passes=0,Bombs=0,XP=0,Streak=0,MVP=0,Survival=0,Achievements=0}
+	return stats[player.UserId]
+end
+local function removeDanger()
+	if dangerBillboard then
+		dangerBillboard:Destroy()
+		dangerBillboard=nil
+	end
+end
+local function addDanger(player)
+	removeDanger()
+	if not player.Character then return end
+	local head=player.Character:FindFirstChild("Head")
+	if not head then return end
+	local gui=Instance.new("BillboardGui")
+	gui.Name="HotPotatoDanger"
+	gui.Adornee=head
+	gui.Size=UDim2.fromOffset(240,70)
+	gui.StudsOffset=Vector3.new(0,3.5,0)
+	gui.AlwaysOnTop=true
+	gui.MaxDistance=200
+	gui.Parent=head
+	local frame=Instance.new("Frame")
+	frame.Size=UDim2.fromScale(1,1)
+	frame.BackgroundColor3=Color3.fromRGB(35,0,0)
+	frame.BackgroundTransparency=.08
+	frame.BorderSizePixel=0
+	frame.Parent=gui
+	local corner=Instance.new("UICorner")
+	corner.CornerRadius=UDim.new(0,16)
+	corner.Parent=frame
+	local stroke=Instance.new("UIStroke")
+	stroke.Color=Color3.fromRGB(255,40,40)
+	stroke.Thickness=3
+	stroke.Parent=frame
+	local label=Instance.new("TextLabel")
+	label.Size=UDim2.fromScale(1,1)
+	label.BackgroundTransparency=1
+	label.Text="⚠️ DANGER"
+	label.TextColor3=Color3.fromRGB(255,65,65)
+	label.TextScaled=true
+	label.Font=Enum.Font.GothamBlack
+	label.Parent=frame
+	dangerBillboard=gui
+end
+local function removeBombs(player)
+	if not player then return end
+	local containers={player:FindFirstChild("Backpack"),player.Character}
+	for _,container in ipairs(containers)do
+		if container then
+			for _,item in ipairs(container:GetChildren())do
+				if item:IsA("Tool")and item.Name:sub(1,10)=="HOT POTATO"then
+					item:Destroy()
+				end
+			end
+		end
+	end
+end
+local function createBomb(player,index)
+	local tool=Instance.new("Tool")
+	tool.Name="HOT POTATO "..tostring(index or 1)
+	tool.RequiresHandle=true
+	tool.CanBeDropped=false
+	tool.ToolTip="⚠️ HOT POTATO"
+	tool.Parent=player:WaitForChild("Backpack")
+	local handle=Instance.new("Part")
+	handle.Name="Handle"
+	handle.Shape=Enum.PartType.Ball
+	handle.Size=Vector3.new(2,2,2)
+	handle.Material=Enum.Material.Neon
+	handle.Color=Color3.fromRGB(255,30,30)
+	handle.CanCollide=false
+	handle.Massless=true
+	handle.Parent=tool
+	local light=Instance.new("PointLight")
+	light.Color=Color3.fromRGB(255,0,0)
+	light.Brightness=8
+	light.Range=18
+	light.Parent=handle
+	local attachment=Instance.new("Attachment")
+	attachment.Parent=handle
+	local particles=Instance.new("ParticleEmitter")
+	particles.Rate=20
+	particles.Lifetime=NumberRange.new(.2,.7)
+	particles.Speed=NumberRange.new(2,5)
+	particles.Size=NumberSequence.new(.18)
+	particles.LightEmission=1
+	particles.Parent=attachment
+	local gui=Instance.new("BillboardGui")
+	gui.Size=UDim2.fromOffset(100,45)
+	gui.StudsOffset=Vector3.new(0,2,0)
+	gui.AlwaysOnTop=true
+	gui.Parent=handle
+	local text=Instance.new("TextLabel")
+	text.Size=UDim2.fromScale(1,1)
+	text.BackgroundTransparency=1
+	text.Text="💣"
+	text.TextScaled=true
+	text.Parent=gui
+	local beep=Instance.new("Sound")
+	beep.SoundId="rbxassetid://9118823103"
+	beep.Volume=.5
+	beep.Looped=true
+	beep.Parent=handle
+	beep:Play()
+end
+local function giveBomb(player,count)
+	if not player then return end
+	if bombOwner then
+		removeBombs(bombOwner)
+	end
+	removeDanger()
+	removeBombs(player)
+	bombOwner=player
+	getStats(player).Bombs+=1
+	local amount=count or 1
+	if config.TripleBomb then amount=3 elseif config.DoubleBomb then amount=2 end
+	for i=1,amount do createBomb(player,i)end
+	addDanger(player)
+	timer=config.RandomTimer and math.random(15,45)or config.Timer
+	remote:FireAllClients("BOMB_GIVEN",player.Name,timer,roundNumber)
+end
+local function findPlayer(name)
+	if typeof(name)~="string"then return nil end
+	name=name:gsub("^%s+",""):gsub("%s+$",""):lower()
+	if name==""then return nil end
+	for _,player in ipairs(Players:GetPlayers())do
+		if player.Name:lower()==name or player.DisplayName:lower()==name then return player end
+	end
+	for _,player in ipairs(Players:GetPlayers())do
+		if player.Name:lower():sub(1,#name)==name or player.DisplayName:lower():sub(1,#name)==name then return player end
+	end
+end
+local function getNearest(player)
+	if not player or not player.Character then return nil end
+	local root=player.Character:FindFirstChild("HumanoidRootPart")
+	if not root then return nil end
+	local closest=nil
+	local distance=config.PassDistance
+	for _,target in ipairs(Players:GetPlayers())do
+		if target~=player and target.Character and target.Character:FindFirstChild("HumanoidRootPart")and not eliminated[target.UserId]then
+			local d=(target.Character.HumanoidRootPart.Position-root.Position).Magnitude
+			if d<distance then
+				distance=d
+				closest=target
+			end
+		end
+	end
+	return closest
+end
+local function passBomb(target)
+	if not bombOwner or not target or target==bombOwner then return end
+	local old=bombOwner
+	getStats(old).Passes+=1
+	giveBomb(target)
+	remote:FireAllClients("PASS",old.Name,target.Name)
+end
+local function alivePlayers()
+	local list={}
+	for _,player in ipairs(Players:GetPlayers())do
+		if not eliminated[player.UserId]then
+			table.insert(list,player)
+		end
+	end
+	return list
+end
+local function startRound()
+	local players=alivePlayers()
+	if #players<1 then return end
+	eliminated={}
+	roundActive=true
+	roundNumber+=1
+	timer=config.RandomTimer and math.random(15,45)or config.Timer
+	local selected=players[math.random(1,#players)]
+	giveBomb(selected)
+	remote:FireAllClients("ROUND_START",roundNumber)
+end
+local function endRound()
+	local players=alivePlayers()
+	roundActive=false
+	if #players==1 then
+		local winner=players[1]
+		local data=getStats(winner)
+		data.Wins+=1
+		data.Streak+=1
+		data.XP+=100
+		data.MVP+=1
+		remote:FireAllClients("WINNER",winner.Name)
+	elseif #players==0 then
+		remote:FireAllClients("WINNER","Nobody")
+	end
+	if bombOwner then removeBombs(bombOwner)end
+	removeDanger()
+	bombOwner=nil
+end
+remote.OnServerEvent:Connect(function(player,action,data)
+	if action=="GIVE_BOMB"then
+		local target=findPlayer(data)
+		if target then
+			giveBomb(target)
+			remote:FireClient(player,"SUCCESS","Bomb given to "..target.Name)
+		else
+			remote:FireClient(player,"ERROR","Player not found")
+		end
+	elseif action=="PASS"then
+		local target=findPlayer(data)or getNearest(bombOwner)
+		passBomb(target)
+	elseif action=="START"then
+		startRound()
+	elseif action=="REMOVE"then
+		if bombOwner then removeBombs(bombOwner)end
+		removeDanger()
+		bombOwner=nil
+	elseif action=="ABILITY"and config.Abilities then
+		local character=player.Character
+		local humanoid=character and character:FindFirstChildOfClass("Humanoid")
+		local root=character and character:FindFirstChild("HumanoidRootPart")
+		if data=="SPEED"and humanoid then
+			humanoid.WalkSpeed=60
+			task.delay(5,function()if humanoid and humanoid.Parent then humanoid.WalkSpeed=16 end end)
+		elseif data=="JUMP"and humanoid then
+			humanoid.JumpPower=100
+			task.delay(5,function()if humanoid and humanoid.Parent then humanoid.JumpPower=50 end end)
+		elseif data=="DASH"and root then
+			root.AssemblyLinearVelocity=root.CFrame.LookVector*120
+		elseif data=="TELEPORT"and root then
+			local target=getNearest(player)
+			if target and target.Character and target.Character:FindFirstChild("HumanoidRootPart")then
+				root.CFrame=target.Character.HumanoidRootPart.CFrame*CFrame.new(0,0,-5)
+			end
+		elseif data=="FREEZE"then
+			local target=getNearest(player)
+			local h=target and target.Character and target.Character:FindFirstChildOfClass("Humanoid")
+			if h then
+				h.WalkSpeed=0
+				task.delay(3,function()if h and h.Parent then h.WalkSpeed=16 end end)
+			end
+		elseif data=="STEAL"then
+			passBomb(getNearest(player))
+		end
+	end
+end)
+Players.PlayerAdded:Connect(function(player)
+	getStats(player)
+	player.CharacterAdded:Connect(function()
+		task.wait(1)
+		if bombOwner==player then addDanger(player)end
+	end)
+end)
+Players.PlayerRemoving:Connect(function(player)
+	if bombOwner==player then
+		removeDanger()
+		bombOwner=nil
+		local players=alivePlayers()
+		if #players>0 and roundActive then
+			giveBomb(players[math.random(1,#players)])
+		end
+	end
+end)
+task.spawn(function()
+	while true do
+		task.wait(1)
+		if roundActive and bombOwner then
+			timer-=1
+			remote:FireAllClients("TIMER",timer)
+			if timer<=10 then
+				remote:FireAllClients("WARNING",timer)
+			end
+			if timer<=0 then
+				local old=bombOwner
+				eliminated[old.UserId]=true
+				getStats(old).Losses+=1
+				getStats(old).Streak=0
+				removeBombs(old)
+				removeDanger()
+				bombOwner=nil
+				remote:FireAllClients("ELIMINATED",old.Name)
+				local players=alivePlayers()
+				if #players<=1 then
+					endRound()
+				else
+					task.wait(2)
+					giveBomb(players[math.random(1,#players)])
+				end
+			end
+		end
+	end
+end)
+]==]
+server.Parent=SSS
+local client=Instance.new("LocalScript")
+client.Name="Ggscriptfag_HotPotato_Client"
+client.Source=[==[
+--// GGSCRIPTFAG HOT POTATO - CLIENT
+--// Cinematic responsive control panel
+local Players=game:GetService("Players")
+local TweenService=game:GetService("TweenService")
+local ReplicatedStorage=game:GetService("ReplicatedStorage")
+local SoundService=game:GetService("SoundService")
+local UserInputService=game:GetService("UserInputService")
+local player=Players.LocalPlayer
+local remote=ReplicatedStorage:WaitForChild("Ggscriptfag_HotPotato_Remote")
+local gui=Instance.new("ScreenGui")
+gui.Name="Ggscriptfag_HotPotato_UI"
+gui.ResetOnSpawn=false
+gui.IgnoreGuiInset=true
+gui.Parent=player:WaitForChild("PlayerGui")
+local function sound(id,volume)
+	local s=Instance.new("Sound")
+	s.SoundId="rbxassetid://"..id
+	s.Volume=volume or .4
+	s.Parent=SoundService
+	return s
+end
+local openSound=sound("9118823103",.3)
+local clickSound=sound("12222216",.3)
+local successSound=sound("138186576",.5)
+local dangerSound=sound("9118823103",.45)
+local eventSound=sound("130797915",.4)
+local main=Instance.new("Frame")
+main.Name="Main"
+main.Size=UDim2.fromOffset(410,520)
+main.Position=UDim2.new(1,-430,0,25)
+main.BackgroundColor3=Color3.fromRGB(10,11,17)
+main.BackgroundTransparency=.03
+main.BorderSizePixel=0
+main.Parent=gui
+local corner=Instance.new("UICorner")
+corner.CornerRadius=UDim.new(0,22)
+corner.Parent=main
+local stroke=Instance.new("UIStroke")
+stroke.Color=Color3.fromRGB(255,55,65)
+stroke.Transparency=.2
+stroke.Thickness=2
+stroke.Parent=main
+local gradient=Instance.new("UIGradient")
+gradient.Rotation=135
+gradient.Color=ColorSequence.new({ColorSequenceKeypoint.new(0,Color3.fromRGB(45,8,15)),ColorSequenceKeypoint.new(.5,Color3.fromRGB(10,11,18)),ColorSequenceKeypoint.new(1,Color3.fromRGB(25,5,10))})
+gradient.Parent=main
+local title=Instance.new("TextLabel")
+title.BackgroundTransparency=1
+title.Position=UDim2.fromOffset(20,12)
+title.Size=UDim2.new(1,-115,0,40)
+title.Text="Ggscriptfag-Hot Potato"
+title.TextColor3=Color3.new(1,1,1)
+title.TextXAlignment=Enum.TextXAlignment.Left
+title.TextSize=21
+title.Font=Enum.Font.GothamBlack
+title.Parent=main
+local subtitle=Instance.new("TextLabel")
+subtitle.BackgroundTransparency=1
+subtitle.Position=UDim2.fromOffset(21,47)
+subtitle.Size=UDim2.new(1,-42,0,22)
+subtitle.Text="CINEMATIC • MULTIPLAYER • CONTROL"
+subtitle.TextColor3=Color3.fromRGB(255,85,90)
+subtitle.TextXAlignment=Enum.TextXAlignment.Left
+subtitle.TextSize=10
+subtitle.Font=Enum.Font.GothamBold
+subtitle.Parent=main
+local minus=Instance.new("TextButton")
+minus.Size=UDim2.fromOffset(40,40)
+minus.Position=UDim2.new(1,-95,0,12)
+minus.Text="−"
+minus.TextSize=25
+minus.TextColor3=Color3.new(1,1,1)
+minus.BackgroundColor3=Color3.fromRGB(35,36,45)
+minus.BorderSizePixel=0
+minus.Parent=main
+local plus=Instance.new("TextButton")
+plus.Size=UDim2.fromOffset(45,45)
+plus.Position=UDim2.new(1,-60,0,25)
+plus.Text="+"
+plus.TextSize=24
+plus.TextColor3=Color3.new(1,1,1)
+plus.BackgroundColor3=Color3.fromRGB(35,36,45)
+plus.BorderSizePixel=0
+plus.Visible=false
+plus.Parent=gui
+for _,b in ipairs({minus,plus})do
+	local c=Instance.new("UICorner")
+	c.CornerRadius=UDim.new(0,12)
+	c.Parent=b
+end
+local input=Instance.new("TextBox")
+input.Size=UDim2.new(1,-40,0,55)
+input.Position=UDim2.fromOffset(20,82)
+input.PlaceholderText="PlayerName"
+input.ClearTextOnFocus=false
+input.TextColor3=Color3.new(1,1,1)
+input.PlaceholderColor3=Color3.fromRGB(125,125,135)
+input.TextSize=17
+input.Font=Enum.Font.GothamMedium
+input.BackgroundColor3=Color3.fromRGB(24,25,33)
+input.BorderSizePixel=0
+input.Parent=main
+local inputCorner=Instance.new("UICorner")
+inputCorner.CornerRadius=UDim.new(0,14)
+inputCorner.Parent=input
+local inputStroke=Instance.new("UIStroke")
+inputStroke.Color=Color3.fromRGB(70,72,85)
+inputStroke.Thickness=1
+inputStroke.Parent=input
+local give=Instance.new("TextButton")
+give.Size=UDim2.new(1,-40,0,58)
+give.Position=UDim2.fromOffset(20,150)
+give.Text="💣  GIVE BOMB"
+give.TextColor3=Color3.new(1,1,1)
+give.TextSize=18
+give.Font=Enum.Font.GothamBlack
+give.BackgroundColor3=Color3.fromRGB(190,35,45)
+give.BorderSizePixel=0
+give.AutoButtonColor=false
+give.Parent=main
+local giveCorner=Instance.new("UICorner")
+giveCorner.CornerRadius=UDim.new(0,15)
+giveCorner.Parent=give
+local start=Instance.new("TextButton")
+start.Size=UDim2.new(1,-40,0,48)
+start.Position=UDim2.fromOffset(20,220)
+start.Text="▶  START ROUND"
+start.TextColor3=Color3.new(1,1,1)
+start.TextSize=15
+start.Font=Enum.Font.GothamBold
+start.BackgroundColor3=Color3.fromRGB(35,110,190)
+start.BorderSizePixel=0
+start.Parent=main
+local startCorner=Instance.new("UICorner")
+startCorner.CornerRadius=UDim.new(0,13)
+startCorner.Parent=start
+local pass=Instance.new("TextButton")
+pass.Size=UDim2.new(1,-40,0,48)
+pass.Position=UDim2.fromOffset(20,278)
+pass.Text="🔥  PASS BOMB"
+pass.TextColor3=Color3.new(1,1,1)
+pass.TextSize=15
+pass.Font=Enum.Font.GothamBold
+pass.BackgroundColor3=Color3.fromRGB(210,95,25)
+pass.BorderSizePixel=0
+pass.Parent=main
+local passCorner=Instance.new("UICorner")
+passCorner.CornerRadius=UDim.new(0,13)
+passCorner.Parent=pass
+local abilities=Instance.new("Frame")
+abilities.Size=UDim2.new(1,-40,0,105)
+abilities.Position=UDim2.fromOffset(20,338)
+abilities.BackgroundTransparency=1
+abilities.Parent=main
+local abilityNames={"SPEED","JUMP","DASH","TELEPORT","FREEZE","STEAL"}
+for i,name in ipairs(abilityNames)do
+	local b=Instance.new("TextButton")
+	b.Size=UDim2.new(1/3,-5,0,42)
+	b.Position=UDim2.new(((i-1)%3)/3,((i-1)%3)*5,math.floor((i-1)/3)*.52,0)
+	b.Text=name
+	b.TextSize=11
+	b.Font=Enum.Font.GothamBold
+	b.TextColor3=Color3.new(1,1,1)
+	b.BackgroundColor3=Color3.fromRGB(30,32,42)
+	b.BorderSizePixel=0
+	b.Parent=abilities
+	Instance.new("UICorner",b).CornerRadius=UDim.new(0,10)
+	b.Activated:Connect(function()
+		clickSound:Play()
+		remote:FireServer("ABILITY",name)
+	end)
+end
+local status=Instance.new("TextLabel")
+status.BackgroundTransparency=1
+status.Position=UDim2.fromOffset(20,450)
+status.Size=UDim2.new(1,-40,0,42)
+status.Text="● READY"
+status.TextColor3=Color3.fromRGB(110,255,160)
+status.TextSize=13
+status.Font=Enum.Font.GothamBold
+status.TextXAlignment=Enum.TextXAlignment.Left
+status.Parent=main
+local function tween(object,time,properties)
+	return TweenService:Create(object,TweenInfo.new(time,Enum.EasingStyle.Quint,Enum.EasingDirection.Out),properties)
+end
+local function buttonFX(button)
+	clickSound:Play()
+	local size=button.Size
+	tween(button,.08,{Size=UDim2.new(size.X.Scale,size.X.Offset-8,size.Y.Scale,size.Y.Offset-5)}):Play()
+	task.delay(.08,function()tween(button,.14,{Size=size}):Play()end)
+end
+give.Activated:Connect(function()
+	buttonFX(give)
+	if input.Text:gsub("%s","")==""then
+		status.Text="● ENTER A PLAYER USERNAME"
+		status.TextColor3=Color3.fromRGB(255,180,100)
+		return
+	end
+	status.Text="● TRANSMITTING BOMB..."
+	status.TextColor3=Color3.fromRGB(255,220,100)
+	remote:FireServer("GIVE_BOMB",input.Text)
+end)
+start.Activated:Connect(function()
+	buttonFX(start)
+	remote:FireServer("START")
+	status.Text="● STARTING ROUND..."
+end)
+pass.Activated:Connect(function()
+	buttonFX(pass)
+	remote:FireServer("PASS",input.Text)
+	status.Text="● PASSING BOMB..."
+end)
+minus.Activated:Connect(function()
+	clickSound:Play()
+	minus.Visible=false
+	plus.Visible=true
+	for _,x in ipairs(main:GetChildren())do
+		if x:IsA("GuiObject")and x~=minus then x.Visible=false end
+	end
+	tween(main,.3,{Size=UDim2.fromOffset(410,65)}):Play()
+end)
+plus.Activated:Connect(function()
+	clickSound:Play()
+	plus.Visible=false
+	minus.Visible=true
+	tween(main,.35,{Size=UDim2.fromOffset(410,520)}):Play()
+	task.delay(.2,function()
+		for _,x in ipairs(main:GetChildren())do
+			if x:IsA("GuiObject")then x.Visible=true end
+		end
+	end)
+end)
+local dragging=false
+local dragStart
+local startPos
+local function beginDrag(i)
+	if i.UserInputType==Enum.UserInputType.MouseButton1 or i.UserInputType==Enum.UserInputType.Touch then
+		dragging=true
+		dragStart=i.Position
+		startPos=main.Position
+		i.Changed:Connect(function()
+			if i.UserInputState==Enum.UserInputState.End then dragging=false end
+		end)
+	end
+end
+main.InputBegan:Connect(beginDrag)
+UserInputService.InputChanged:Connect(function(i)
+	if dragging and(i.UserInputType==Enum.UserInputType.MouseMovement or i.UserInputType==Enum.UserInputType.Touch)then
+		local delta=i.Position-dragStart
+		main.Position=UDim2.new(startPos.X.Scale,startPos.X.Offset+delta.X,startPos.Y.Scale,startPos.Y.Offset+delta.Y)
+	end
+end)
+remote.OnClientEvent:Connect(function(action,a,b,c)
+	if action=="SUCCESS"then
+		successSound:Play()
+		status.Text="● "..tostring(a)
+		status.TextColor3=Color3.fromRGB(110,255,160)
+	elseif action=="ERROR"then
+		status.Text="● "..tostring(a)
+		status.TextColor3=Color3.fromRGB(255,80,80)
+	elseif action=="BOMB_GIVEN"then
+		dangerSound:Play()
+		status.Text="⚠️ "..tostring(a).." HAS THE BOMB"
+		status.TextColor3=Color3.fromRGB(255,70,70)
+	elseif action=="TIMER"then
+		status.Text="⏱ "..tostring(a).." SECONDS"
+		if tonumber(a)and tonumber(a)<=5 then dangerSound:Play()end
+	elseif action=="WARNING"then
+		status.Text="⚠️ "..tostring(a).." SECONDS LEFT!"
+		status.TextColor3=Color3.fromRGB(255,70,70)
+	elseif action=="PASS"then
+		eventSound:Play()
+		status.Text="🔥 "..tostring(a).." → "..tostring(b)
+		status.TextColor3=Color3.fromRGB(255,180,80)
+	elseif action=="ROUND_START"then
+		eventSound:Play()
+		status.Text="🎬 ROUND "..tostring(a).." STARTED"
+		status.TextColor3=Color3.fromRGB(100,190,255)
+	elseif action=="ELIMINATED"then
+		eventSound:Play()
+		status.Text="💥 "..tostring(a).." ELIMINATED"
+		status.TextColor3=Color3.fromRGB(255,80,80)
+	elseif action=="WINNER"then
+		successSound:Play()
+		status.Text="🏆 WINNER: "..tostring(a)
+		status.TextColor3=Color3.fromRGB(255,220,80)
+	end
+end)
+main.Size=UDim2.fromOffset(360,470)
+main.Position=UDim2.new(1,-400,0,50)
+task.wait(.15)
+openSound:Play()
+tween(main,.55,{Size=UDim2.fromOffset(410,520),Position=UDim2.new(1,-430,0,25)}):Play()
+]==]
+client.Parent=SPS
+print("========================================")
+print("GGSCRIPTFAG HOT POTATO INSTALLED")
+print("========================================")
